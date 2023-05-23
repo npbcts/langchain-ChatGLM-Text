@@ -304,7 +304,7 @@ with gr.Blocks(css=block_css, theme=gr.themes.Default(**default_theme_args)) as 
                                                   interactive=True, visible=True)
                         with gr.Tab("上传文件"):
                             files = gr.File(label="添加文件",
-                                            file_types=['.txt', '.md', '.docx', '.pdf'],
+                                            file_types=['.txt', '.md', '.docx', '.html'],
                                             file_count="multiple",
                                             show_label=False)
                             load_file_button = gr.Button("上传文件并加载知识库")
@@ -386,7 +386,7 @@ with gr.Blocks(css=block_css, theme=gr.themes.Default(**default_theme_args)) as 
                                                   interactive=True, visible=True)
                         with gr.Tab("上传文件"):
                             files = gr.File(label="添加文件",
-                                            file_types=['.txt', '.md', '.docx', '.pdf'],
+                                            file_types=['.txt', '.md', '.docx', '.html'],
                                             file_count="multiple",
                                             show_label=False
                                             )

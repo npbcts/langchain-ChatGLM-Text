@@ -1,3 +1,10 @@
+# config
+configs/model_config_local.py
+
+# knowlage_data
+content/*
+vector_store
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 */**/__pycache__/

@@ -13,7 +13,7 @@ embedding_model_dict = {
     "ernie-tiny": "nghuyong/ernie-3.0-nano-zh",
     "ernie-base": "nghuyong/ernie-3.0-base-zh",
     "text2vec-base": "shibing624/text2vec-base-chinese",
-    "text2vec": "GanymedeNil/text2vec-large-chinese",
+    "text2vec": "/home/kent/fgpt/GanymedeNil_text2vec-large-chinese",
 }
 
 # Embedding model name
@@ -26,47 +26,47 @@ EMBEDDING_DEVICE = "cuda" if torch.cuda.is_available() else "mps" if torch.backe
 # supported LLM models
 # llm_model_dict 处理了loader的一些预设行为，如加载位置，模型名称，模型处理器实例
 llm_model_dict = {
-    "chatglm-6b-int4-qe": {
-        "name": "chatglm-6b-int4-qe",
-        "pretrained_model_name": "THUDM/chatglm-6b-int4-qe",
-        "local_model_path": None,
-        "provides": "ChatGLM"
-    },
+    # "chatglm-6b-int4-qe": {
+    #     "name": "chatglm-6b-int4-qe",
+    #     "pretrained_model_name": "THUDM/chatglm-6b-int4-qe",
+    #     "local_model_path": None,
+    #     "provides": "ChatGLM"
+    # },
     "chatglm-6b-int4": {
         "name": "chatglm-6b-int4",
-        "pretrained_model_name": "THUDM/chatglm-6b-int4",
-        "local_model_path": None,
+        "pretrained_model_name": "/home/kent/fgpt/THUDM_chatglm-6b-int4",
+        "local_model_path": "/home/kent/fgpt/THUDM_chatglm-6b-int4",  # None,
         "provides": "ChatGLM"
     },
     "chatglm-6b-int8": {
         "name": "chatglm-6b-int8",
-        "pretrained_model_name": "THUDM/chatglm-6b-int8",
-        "local_model_path": None,
+        "pretrained_model_name": "/home/kent/fgpt/THUDM_chatglm-6b-int8",
+        "local_model_path":   "/home/kent/fgpt/THUDM_chatglm-6b-int8",  # None,
         "provides": "ChatGLM"
     },
-    "chatglm-6b": {
-        "name": "chatglm-6b",
-        "pretrained_model_name": "THUDM/chatglm-6b",
-        "local_model_path": None,
-        "provides": "ChatGLM"
-    },
+    # "chatglm-6b": {
+    #     "name": "chatglm-6b",
+    #     "pretrained_model_name": "THUDM/chatglm-6b",
+    #     "local_model_path": None,
+    #     "provides": "ChatGLM"
+    # },
 
-    "chatyuan": {
-        "name": "chatyuan",
-        "pretrained_model_name": "ClueAI/ChatYuan-large-v2",
-        "local_model_path": None,
-        "provides": None
-    },
-    "moss": {
-        "name": "moss",
-        "pretrained_model_name": "fnlp/moss-moon-003-sft",
-        "local_model_path": None,
-        "provides": "MOSSLLM"
-    }
+    # "chatyuan": {
+    #     "name": "chatyuan",
+    #     "pretrained_model_name": "ClueAI/ChatYuan-large-v2",
+    #     "local_model_path": None,
+    #     "provides": None
+    # },
+    # "moss": {
+    #     "name": "moss",
+    #     "pretrained_model_name": "fnlp/moss-moon-003-sft",
+    #     "local_model_path": None,
+    #     "provides": "MOSSLLM"
+    # }
 }
 
 # LLM model name
-LLM_MODEL = "chatglm-6b"
+LLM_MODEL = "chatglm-6b-int8"
 
 # LLM lora path，默认为空，如果有请直接指定文件夹路径
 LLM_LORA_PATH = ""

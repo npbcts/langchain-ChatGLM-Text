@@ -10,7 +10,7 @@ import numpy as np
 from utils import torch_gc
 from tqdm import tqdm
 from pypinyin import lazy_pinyin
-from loader import UnstructuredPaddleImageLoader, UnstructuredPaddlePDFLoader
+# from loader import UnstructuredPaddleImageLoader, UnstructuredPaddlePDFLoader
 from models.base import (BaseAnswer,
                          AnswerResult,
                          AnswerResultStream,
@@ -20,6 +20,7 @@ from models.loader import LoaderCheckPoint
 import models.shared as shared
 from agent import bing_search
 from langchain.docstore.document import Document
+from langchain.document_loaders import BSHTMLLoader
 
 
 def load_file(filepath, sentence_size=SENTENCE_SIZE):
@@ -30,14 +31,17 @@ def load_file(filepath, sentence_size=SENTENCE_SIZE):
         loader = TextLoader(filepath, autodetect_encoding=True)
         textsplitter = ChineseTextSplitter(pdf=False, sentence_size=sentence_size)
         docs = loader.load_and_split(textsplitter)
-    elif filepath.lower().endswith(".pdf"):
-        loader = UnstructuredPaddlePDFLoader(filepath)
-        textsplitter = ChineseTextSplitter(pdf=True, sentence_size=sentence_size)
-        docs = loader.load_and_split(textsplitter)
-    elif filepath.lower().endswith(".jpg") or filepath.lower().endswith(".png"):
-        loader = UnstructuredPaddleImageLoader(filepath, mode="elements")
-        textsplitter = ChineseTextSplitter(pdf=False, sentence_size=sentence_size)
-        docs = loader.load_and_split(text_splitter=textsplitter)
+    # elif filepath.lower().endswith(".pdf"):
+    #     loader = UnstructuredPaddlePDFLoader(filepath)
+    #     textsplitter = ChineseTextSplitter(pdf=True, sentence_size=sentence_size)
+    #     docs = loader.load_and_split(textsplitter)
+    # elif filepath.lower().endswith(".jpg") or filepath.lower().endswith(".png"):
+    #     loader = UnstructuredPaddleImageLoader(filepath, mode="elements")
+    #     textsplitter = ChineseTextSplitter(pdf=False, sentence_size=sentence_size)
+    #     docs = loader.load_and_split(text_splitter=textsplitter)
+    elif filepath.lower().endswith(".html"):
+        loader = BSHTMLLoader(filepath)
+        docs = loader.load()  # 由于都是简短问题，不再拆分
     else:
         loader = UnstructuredFileLoader(filepath, mode="elements")
         textsplitter = ChineseTextSplitter(pdf=False, sentence_size=sentence_size)
@@ -319,7 +323,7 @@ class LocalDocQA:
 if __name__ == "__main__":
     # 初始化消息
     args = None
-    args = parser.parse_args(args=['--model-dir', '/media/checkpoint/', '--model', 'chatglm-6b', '--no-remote-model'])
+    args = parser.parse_args(args=['--model-dir', '/media/checkpoint/', '--model', 'chatglm-6b-int8', '--no-remote-model'])
 
     args_dict = vars(args)
     shared.loaderCheckPoint = LoaderCheckPoint(args_dict)
