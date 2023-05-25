@@ -34,13 +34,13 @@ llm_model_dict = {
     # },
     "chatglm-6b-int4": {
         "name": "chatglm-6b-int4",
-        "pretrained_model_name": "/home/kent/fgpt/THUDM_chatglm-6b-int4",
+        "pretrained_model_name": "chatglm-6b-int4",
         "local_model_path": "/home/kent/fgpt/THUDM_chatglm-6b-int4",  # None,
         "provides": "ChatGLM"
     },
     "chatglm-6b-int8": {
         "name": "chatglm-6b-int8",
-        "pretrained_model_name": "/home/kent/fgpt/THUDM_chatglm-6b-int8",
+        "pretrained_model_name": "chatglm-6b-int8",
         "local_model_path":   "/home/kent/fgpt/THUDM_chatglm-6b-int8",  # None,
         "provides": "ChatGLM"
     },
@@ -93,19 +93,19 @@ PROMPT_TEMPLATE = """已知信息：
 根据上述已知信息，简洁和专业的来回答用户的问题。如果无法从中得到答案，请说 “根据已知信息无法回答该问题” 或 “没有提供足够的相关信息”，不允许在答案中添加编造成分，答案请使用中文。 问题是：{question}"""
 
 # 文本分句长度
-SENTENCE_SIZE = 100
+SENTENCE_SIZE = 300
 
 # 匹配后单段上下文长度
 CHUNK_SIZE = 250
 
 # LLM input history length
-LLM_HISTORY_LEN = 3
+LLM_HISTORY_LEN = 1
 
 # return top-k text chunk from vector store
-VECTOR_SEARCH_TOP_K = 5
+VECTOR_SEARCH_TOP_K = 3
 
 # 知识检索内容相关度 Score, 数值范围约为0-1100，如果为0，则不生效，经测试设置为小于500时，匹配结果更精准
-VECTOR_SEARCH_SCORE_THRESHOLD = 0
+VECTOR_SEARCH_SCORE_THRESHOLD = 200
 
 NLTK_DATA_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "nltk_data")
 
@@ -117,6 +117,7 @@ llm device: {LLM_DEVICE}
 embedding device: {EMBEDDING_DEVICE}
 dir: {os.path.dirname(os.path.dirname(__file__))}
 flagging username: {FLAG_USER_NAME}
+vecter search score threshold: {VECTOR_SEARCH_SCORE_THRESHOLD}
 """)
 
 # 是否开启跨域，默认为False，如果需要开启，请设置为True

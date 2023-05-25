@@ -323,7 +323,7 @@ class LocalDocQA:
 if __name__ == "__main__":
     # 初始化消息
     args = None
-    args = parser.parse_args(args=['--model-dir', '/media/checkpoint/', '--model', 'chatglm-6b-int8', '--no-remote-model'])
+    args = parser.parse_args(args=['--model-dir', '/media/checkpoint/', '--model', LLM_MODEL, '--no-remote-model'])
 
     args_dict = vars(args)
     shared.loaderCheckPoint = LoaderCheckPoint(args_dict)
