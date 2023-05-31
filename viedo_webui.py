@@ -1,7 +1,7 @@
 import gradio as gr
 import os
 import shutil
-
+from datetime import datetime
 from chains.local_doc_qa import LocalDocQA
 from configs.model_config import *
 import nltk
@@ -46,7 +46,8 @@ def get_answer(query, vs_path, history, mode, streaming: bool = STREAMING):
                 query=query, vs_path=vs_path, chat_history=history, streaming=streaming):
             yield history, ""
         else:
-            history[-1][-1] +="(回答完毕)"
+            time_now_str = datetime.now().strftime("%Y年%m月%d日%H时%M分%S秒")
+            history[-1][-1] += f'(由WhaleMan鲸人在{time_now_str}回答)'
             yield history, ""
     else:
         for answer_result in local_doc_qa.llm.generatorAnswer(prompt=query, history=history,
@@ -90,10 +91,10 @@ block_css = """.importantButton {
     border: none !important;
 }
 .qatext textarea {font-size: 18px !important}"""
-
-webui_title = """
-## <p style="text-align:left;">🤖智能财务知识问答(直播间发言提问方法: 字母+问题)<span style="float:right;">📺BiliBili: Whaleman鲸人</span></p>
-
+users_init_message = "🐻答案仅供参考,您做重要决策时请做出独立判断或咨询财务方面的专家"
+webui_title = f"""
+## 🤖WhaleMan鲸人的智能财务知识问答
+### {users_init_message}
 """
 default_vs = vs_list[0] if len(vs_list) >= 1 else "为空"
 
@@ -112,7 +113,6 @@ llm_model_ins.set_history_len(LLM_HISTORY_LEN)
 model_status = init_model(llm_model=llm_model_ins)
 init_message = f"""欢迎使用智能财务知识问答,答案来自{default_vs},{model_status}
 """
-users_init_message = "🐻答案仅供参考,您做重要决策时请做出独立判断或咨询财务方面的专家"
 
 default_theme_args = dict(
     font=["Source Sans Pro", 'ui-sans-serif', 'system-ui', 'sans-serif'],
@@ -129,15 +129,14 @@ with gr.Blocks(css=block_css, theme=gr.themes.Default(**default_theme_args)) as 
         with gr.Column(scale=15):
             # users 用于展示问题和当前的使用用户
             users = gr.Textbox(show_label=False, elem_id="users", elem_classes="qatext",
-                placeholder=users_init_message).style(container=False)
+                placeholder="").style(container=False)
 
-            # 输入查询题目和查询状态
-            query = gr.Textbox(show_label=False, elem_id="askquestion", elem_classes="qatext",
-                placeholder="🐟本环境无记忆能力,再次提问时需要提供更全面的问题描述。超过20字提问, 各段使用“字母1/nXXX?”格式。").style(container=False)
             chatbot = gr.Chatbot([[None, None]],
                                     elem_id="chat-box", elem_classes="qatext",
                                     show_label=False).style(height=730, container=True)
-
+            # 输入查询题目和查询状态
+            query = gr.Textbox(show_label=False, elem_id="askquestion", elem_classes="qatext",
+                placeholder="", ).style(container=False)  # 
             mode = gr.Radio([""], label="", value="知识库问答", visible=False)
             flag_csv_logger.setup([query, vs_path, chatbot, mode], "flagged")
             query.submit(get_answer,
